@@ -1,0 +1,11 @@
+{
+  "dotnet.defaultSolution": "BadTrip.sln",
+  "search.exclude": {
+    "**/bin": true,
+    "**/obj": true,
+    "**/*.code-search": true
+  },
+  "omnisharp.enableEditorConfigSupport": true,
+  "csharp.suppressDotnetRestoreNotification": true,
+  "debug.onTaskErrors": "abort",
+}
