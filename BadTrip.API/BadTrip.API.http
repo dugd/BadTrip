@@ -1,0 +1,6 @@
+@BadTripAPI_HostAddress = http://localhost:5193
+
+GET {{BadTripAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
