@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using BadTrip.Application.Common.Behaviors;
 
 namespace BadTrip.Application
 {
@@ -11,12 +13,13 @@ namespace BadTrip.Application
             services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+
+                // Validation behavoir
+                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             });
 
             // Register Fluent validators
             services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
-
-            // Pipeline behaviors?
 
             return services;
         }
