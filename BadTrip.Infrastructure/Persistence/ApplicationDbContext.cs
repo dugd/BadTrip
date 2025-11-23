@@ -1,4 +1,5 @@
 ﻿using BadTrip.Domain.Common;
+using BadTrip.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BadTrip.Infrastructure.Persistence
@@ -9,6 +10,10 @@ namespace BadTrip.Infrastructure.Persistence
             : base(options)
         {
         }
+
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Hotel> Hotels => Set<Hotel>();
+        public DbSet<Tour> Tours => Set<Tour>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
