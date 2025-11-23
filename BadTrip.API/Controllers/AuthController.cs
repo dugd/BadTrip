@@ -24,5 +24,14 @@ namespace BadTrip.API.Controllers
             await _mediator.Send(command, ct);
             return Ok(new { Message = "Registration successful" });
         }
+
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Login([FromBody] LoginUserCommand command, CancellationToken ct)
+        {
+            var res = await _mediator.Send(command, ct);
+            return Ok(res);
+        }
     }
 }

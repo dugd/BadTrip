@@ -10,6 +10,11 @@ namespace BadTrip.Infrastructure.Persistence.Repositories
         {
         }
 
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            return await _dbSet.Where(u => u.Email == email).FirstOrDefaultAsync();
+        }
+
         public async Task<bool> IsEmailUniqueAsync(string email)
         {
             return !await _dbSet.AnyAsync(u => u.Email == email);
