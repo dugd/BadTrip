@@ -1,5 +1,5 @@
 ﻿using BadTrip.Domain.Exceptions;
-using FluentValidation;
+using FluentValidationException = FluentValidation.ValidationException;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,10 +25,10 @@ namespace BadTrip.API.Middleware
 
             switch (exception)
             {
-                case ValidationException validationEx:
+                case FluentValidationException validationEx:
                     problemDetails.Title = "Validation Failed";
                     problemDetails.Status = StatusCodes.Status400BadRequest;
-                    problemDetails.Detail = validationEx.Message ?? "One or more validation errors occurred.";
+                    problemDetails.Detail = "One or more validation errors occurred.";
 
                     problemDetails.Extensions["errors"] = validationEx.Errors
                         .GroupBy(e => e.PropertyName)
@@ -36,6 +36,12 @@ namespace BadTrip.API.Middleware
                             g => g.Key,
                             g => g.Select(e => e.ErrorMessage).ToArray()
                         );
+                    break;
+
+                case ValidationException validationEx:
+                    problemDetails.Title = "Validation Failed";
+                    problemDetails.Status = StatusCodes.Status400BadRequest;
+                    problemDetails.Detail = validationEx.Message ?? "Unknown validation error occurred.";
                     break;
 
                 case NotFoundException notFoundEx:

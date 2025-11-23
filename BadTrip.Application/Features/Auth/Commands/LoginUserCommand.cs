@@ -1,8 +1,8 @@
 ﻿using BadTrip.Application.Common.Interfaces;
 using BadTrip.Application.Features.Auth.DTO;
+using BadTrip.Domain.Exceptions;
 using BadTrip.Domain.Interfaces;
 using BadTrip.Domain.Interfaces.Repositories;
-using FluentValidation;
 using MediatR;
 
 namespace BadTrip.Application.Features.Auth.Commands

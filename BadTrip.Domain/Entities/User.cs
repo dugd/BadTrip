@@ -51,7 +51,7 @@ namespace BadTrip.Domain.Entities
             var user = new User(email, passwordHash, UserRole.Tourist, firstName, lastName);
 
             if (dateOfBirth > DateTime.UtcNow.AddYears(-18))
-                throw new DomainException("Tourist must be an adult.");
+                throw new ValidationException("Tourist must be an adult.");
 
             user.PhoneNumber = phoneNumber;
             user.DateOfBirth = dateOfBirth;
@@ -68,7 +68,7 @@ namespace BadTrip.Domain.Entities
             string companyName)
         {
             if (string.IsNullOrWhiteSpace(companyName))
-                throw new DomainException("Company name is required.");
+                throw new ValidationException("Company name is required.");
 
             var user = new User(email, passwordHash, UserRole.TourOperator, firstName, lastName);
 

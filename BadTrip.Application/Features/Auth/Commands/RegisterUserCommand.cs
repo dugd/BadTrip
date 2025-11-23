@@ -5,7 +5,6 @@ using BadTrip.Domain.Exceptions;
 using BadTrip.Domain.Interfaces;
 using BadTrip.Domain.Interfaces.Repositories;
 using MediatR;
-using System.ComponentModel.DataAnnotations;
 
 namespace BadTrip.Application.Features.Auth.Commands
 {
