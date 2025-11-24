@@ -1,3 +1,4 @@
+using BadTrip.API.Contracts.Booking;
 using BadTrip.Application.Features.Hotels.Commands.CreateHotel;
 using BadTrip.Application.Features.Hotels.Commands.DeleteHotel;
 using BadTrip.Application.Features.Hotels.Commands.UpdateHotel;
@@ -11,7 +12,6 @@ namespace BadTrip.API.Controllers
 {
     [ApiController]
     [Route("api/hotels")]
-    [Authorize(Roles = "Admin")]
     public class HotelsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -22,6 +22,7 @@ namespace BadTrip.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -56,25 +57,31 @@ namespace BadTrip.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> UpdateHotel(Guid id, [FromBody] UpdateHotelCommand command, CancellationToken ct)
+        public async Task<IActionResult> UpdateHotel(Guid id, [FromBody] UpdateHotelRequest request, CancellationToken ct)
         {
-            // Ensure route ID matches command ID
-            if (id != command.Id)
-            {
-                return BadRequest(new { Message = "Route ID does not match command ID." });
-            }
+            var command = new UpdateHotelCommand(
+                Id: id,
+                Name: request.Name,
+                Street: request.Street,
+                City: request.City,
+                Country: request.Country,
+                Stars: request.Stars,
+                ImageUrl: request.ImageUrl
+            );
 
             var result = await _mediator.Send(command, ct);
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
