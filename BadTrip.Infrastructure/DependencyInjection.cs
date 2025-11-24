@@ -1,8 +1,10 @@
 ﻿using BadTrip.Application.Common.Interfaces;
 using BadTrip.Domain.Interfaces;
 using BadTrip.Domain.Interfaces.Repositories;
+using BadTrip.Domain.Services;
 using BadTrip.Infrastructure.Authentication;
 using BadTrip.Infrastructure.Persistence;
+using BadTrip.Infrastructure.Services;
 using BadTrip.Infrastructure.Persistence.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -32,6 +34,7 @@ namespace BadTrip.Infrastructure
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddRepositories();
 
+            services.AddSingleton<IPaymentService, MockPaymentService>();
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
