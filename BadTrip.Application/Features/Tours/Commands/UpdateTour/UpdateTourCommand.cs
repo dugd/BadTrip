@@ -8,6 +8,7 @@ using MediatR;
 
 namespace BadTrip.Application.Features.Tours.Commands.UpdateTour
 {
+    // TODO: Send OperatorId to verify owner
     public record UpdateTourCommand(
         Guid Id,
         string Title,

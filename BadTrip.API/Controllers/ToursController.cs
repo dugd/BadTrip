@@ -1,3 +1,6 @@
+﻿using Azure.Core;
+using BadTrip.API.Contracts.Tours;
+using BadTrip.API.Extensions;
 using BadTrip.Application.Features.Tours.Commands.CreateTour;
 using BadTrip.Application.Features.Tours.Commands.UpdateTour;
 using BadTrip.Application.Features.Tours.Queries.GetAllTours;
@@ -29,8 +32,20 @@ namespace BadTrip.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> CreateTour([FromBody] CreateTourCommand command, CancellationToken ct)
+        public async Task<IActionResult> CreateTour([FromBody] CreateTourRequest request, CancellationToken ct)
         {
+            var command = new CreateTourCommand(
+                Title: request.Title,
+                Description: request.Description,
+                PriceAmount: request.PriceAmount,
+                PriceCurrency: request.PriceCurrency,
+                ImageUrl: request.ImageUrl,
+                HotelId: request.HotelId,
+                MaxParticipants: request.MaxParticipants,
+                StartDate: request.StartDate,
+                EndDate: request.EndDate,
+                OperatorId: User.GetUserId()
+            );
             var result = await _mediator.Send(command, ct);
             return Ok(result);
         }
@@ -81,14 +96,21 @@ namespace BadTrip.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> UpdateTour(Guid id, [FromBody] UpdateTourCommand command, CancellationToken ct)
+        public async Task<IActionResult> UpdateTour(Guid id, [FromBody] UpdateTourRequest request, CancellationToken ct)
         {
-            // Ensure route ID matches command ID
-            if (id != command.Id)
-            {
-                return BadRequest(new { Message = "Route ID does not match command ID." });
-            }
-
+            var command = new UpdateTourCommand(
+                Id: id,
+                Title: request.Title,
+                Description: request.Description,
+                PriceAmount: request.PriceAmount,
+                PriceCurrency: request.PriceCurrency,
+                ImageUrl: request.ImageUrl,
+                HotelId: request.HotelId,
+                MaxParticipants: request.MaxParticipants,
+                StartDate: request.StartDate,
+                EndDate: request.EndDate
+                // OperatorId: operatorId
+            );
             var result = await _mediator.Send(command, ct);
             return Ok(result);
         }
