@@ -25,4 +25,5 @@ namespace BadTrip.API.Extensions
 
             return parsedId;
         }
+    }
 }
